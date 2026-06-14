@@ -300,12 +300,11 @@ public class OptionsDialogue {
 	
 	private static String getJavaVersionInformation() {
 		StringBuilder sb = new StringBuilder();
-		String version = System.getProperty("java.version");
 		
 		sb.append("<p style='text-align:center;'>");
 			sb.append("Your java version: "+System.getProperty("java.version"));
-			if (!version.equals("1.8.0_172")) {
-				sb.append("<br/>[style.italicsBad(1.8.0_172 is the recommended java version!)]");
+			if (Runtime.version().feature()<25) {
+				sb.append("<br/>[style.italicsBad(Java 25 is the minimum recommended java version!)]");
 				sb.append("<br/>[style.italicsMinorBad(This may result in abnormal behaviour such as tooltips getting stuck! Please launch with the recommended version or use the .exe build.)]");
 			}
 		sb.append("</p>");

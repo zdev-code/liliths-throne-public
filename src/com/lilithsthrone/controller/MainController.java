@@ -1295,7 +1295,7 @@ public class MainController implements Initializable {
 
 		webViewButtonsLeft.setContextMenuEnabled(false);
 		webEngineButtonsLeft = webViewButtonsLeft.getEngine();
-		webEngineButtonsLeft.setJavaScriptEnabled(false);
+		webEngineButtonsLeft.setJavaScriptEnabled(true);
 		webEngineButtonsLeft.getHistory().setMaxSize(0);
 		
 		if (Main.getProperties().hasValue(PropertyValue.lightTheme)) {
@@ -1314,7 +1314,7 @@ public class MainController implements Initializable {
 
 		webViewButtonsRight.setContextMenuEnabled(false);
 		webEngineButtonsRight = webViewButtonsRight.getEngine();
-		webEngineButtonsRight.setJavaScriptEnabled(false);
+		webEngineButtonsRight.setJavaScriptEnabled(true);
 		webEngineButtonsRight.getHistory().setMaxSize(0);
 		
 		if (Main.getProperties().hasValue(PropertyValue.lightTheme)) {
@@ -1335,7 +1335,7 @@ public class MainController implements Initializable {
 		// Attributes WebView:
 		webViewAttributes.setContextMenuEnabled(false);
 		webEngineAttributes = webViewAttributes.getEngine();
-		webEngineAttributes.setJavaScriptEnabled(false);
+		webEngineAttributes.setJavaScriptEnabled(true);
 		webEngineAttributes.getHistory().setMaxSize(0);
 		
 		if (Main.getProperties().hasValue(PropertyValue.lightTheme)) {
@@ -1356,7 +1356,7 @@ public class MainController implements Initializable {
 		// Attributes WebView:
 		webViewRight.setContextMenuEnabled(false);
 		webEngineRight = webViewRight.getEngine();
-		webEngineRight.setJavaScriptEnabled(false);
+		webEngineRight.setJavaScriptEnabled(true);
 		webEngineRight.getHistory().setMaxSize(0);
 		
 		if (Main.getProperties().hasValue(PropertyValue.lightTheme)) {
@@ -2836,7 +2836,7 @@ public class MainController implements Initializable {
 	}
 	
 	
-	private boolean useJavascriptToSetContent = true;
+	private boolean useJavascriptToSetContent = false;
 	
 	private void setWebEngineContent(WebEngine engine, String content) {
 		content=content.replaceAll("[\r\n]", "");
@@ -2885,11 +2885,7 @@ public class MainController implements Initializable {
 			content = "<div class='tooltip-animation' style='width: 100%;'>" + content + "</div>";
 		}
 		content = "<div id='sizing-box' style='width: 100%;'>" + content + "</div>";
-		if(useJavascriptToSetContent) {
-			setWebEngineContent(webEngineTooltip, content);
-		} else {
-			webEngineTooltip.loadContent(content);
-		}
+		setWebEngineContent(webEngineTooltip, content);
 		int height = 0;
 		try {
 			// add 8 + 8 to account for the top + bottom margins
