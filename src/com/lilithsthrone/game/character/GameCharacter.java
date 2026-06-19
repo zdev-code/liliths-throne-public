@@ -396,6 +396,7 @@ public abstract class GameCharacter implements XMLSaving {
 	protected List<AbstractFetish> fetishesFromClothing;
 	protected Map<AbstractFetish, Integer> fetishExperienceMap;
 	protected List<AppliedStatusEffect> statusEffects;
+	protected Set<AbstractStatusEffect> statusEffectsSet;
 	/** Maps seconds passed to Maps of StatusEffect-descriptions. */
 	protected Map<Long, Map<AbstractStatusEffect, String>> statusEffectDescriptions;
 	
@@ -660,6 +661,7 @@ public abstract class GameCharacter implements XMLSaving {
 		fetishExperienceMap = new HashMap<>();
 		statusEffectDescriptions = new TreeMap<>(); // TreeMaps keep their natural key ordering
 		statusEffects = new ArrayList<>();
+		statusEffectsSet = new HashSet<>();
 		
 		potionAttributes = new HashMap<>();
 
@@ -7758,12 +7760,7 @@ public abstract class GameCharacter implements XMLSaving {
 	}
 	
 	public boolean hasStatusEffect(AbstractStatusEffect se) {
-		for(AppliedStatusEffect appliedSe : statusEffects) {
-			if(appliedSe.getEffect()==se) {
-				return true;
-			}
-		}
-		return false;
+		return statusEffectsSet.contains(se);
 	}
 	
 	public boolean hasAnyEnforcerStatusEffect() {
@@ -7795,6 +7792,7 @@ public abstract class GameCharacter implements XMLSaving {
 		}
 		
 		statusEffects.add(new AppliedStatusEffect(statusEffect, lastTimeAppliedEffect, secondsPassed, secondsRemaining));
+		statusEffectsSet.add(statusEffect);
 		
 		// Bonus attributes are not incremented for status effects, as they can vary while a character is under the effects of them.
 		// Instead, bonus attributes from status effects are calculated at the moment that getBonusAttribute() is called.
@@ -7825,6 +7823,7 @@ public abstract class GameCharacter implements XMLSaving {
 		String s = se.applyRemoveStatusEffect(this);
 		
 		statusEffects.removeIf(ase -> ase.getEffect()==se);
+		statusEffectsSet.remove(se);
 		
 		s+=se.applyPostRemovalStatusEffect(this);
 
@@ -7846,6 +7845,7 @@ public abstract class GameCharacter implements XMLSaving {
 		String s = se.applyRemoveStatusEffect(this);
 
 		statusEffects.removeIf(ase -> ase.getEffect()==se);
+		statusEffectsSet.remove(se);
 
 		s+=se.applyPostRemovalStatusEffect(this);
 		

@@ -3,9 +3,11 @@ package com.lilithsthrone.game.occupantManagement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -295,11 +297,15 @@ public class OccupancyUtil implements XMLSaving {
 	}
 	
 	public void performHourlyUpdate(int day, int hour) {
+		Set<String> charactersPresentIds = new HashSet<>();
+		for(NPC presentNpc : Main.game.getCharactersPresent()) {
+			charactersPresentIds.add(presentNpc.getId());
+		}
 		// Non-slave occupants:
 		for(String id : Main.game.getPlayer().getFriendlyOccupants()) {
 			try {
 				NPC occupant = (NPC) Main.game.getNPCById(id);
-				if(!Main.game.getPlayer().isActive() || !Main.game.getCharactersPresent().contains(occupant)) { // If the player isn't interacting with them, then move them:
+				if(!Main.game.getPlayer().isActive() || !charactersPresentIds.contains(occupant.getId())) { // If the player isn't interacting with them, then move them:
 //					if(!occupant.getHistory().getOccupationTags().contains(OccupationTag.LOWLIFE)) {
 						if(occupant.getHistory().isAtWork(hour)) {
 							occupant.setLocation(WorldType.EMPTY, PlaceType.GENERIC_HOLDING_CELL);
@@ -343,7 +349,7 @@ public class OccupancyUtil implements XMLSaving {
 
 				charactersAtJob.get(currentJob).add(character.getId());
 				
-				if(!Main.game.getPlayer().isActive() || !Main.game.getCharactersPresent().contains(character) // If the player isn't interacting with them, then move them
+				if(!Main.game.getPlayer().isActive() || !charactersPresentIds.contains(character.getId()) // If the player isn't interacting with them, then move them
 						|| Main.game.getPlayerCell().getPlace().getPlaceType()==PlaceType.LILAYA_HOME_ROOM_PLAYER) { // Also move slaves who are in bedroom but have elsewhere to be
 					charactersAtJob.get(currentJob).add(character.getId());
 					

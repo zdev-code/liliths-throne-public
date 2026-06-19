@@ -24,10 +24,6 @@ import com.lilithsthrone.controller.eventListeners.buttons.ButtonCopyDialogueEve
 import com.lilithsthrone.controller.eventListeners.buttons.ButtonInventoryEventHandler;
 import com.lilithsthrone.controller.eventListeners.buttons.ButtonJournalEventListener;
 import com.lilithsthrone.controller.eventListeners.buttons.ButtonMainMenuEventListener;
-import com.lilithsthrone.controller.eventListeners.buttons.ButtonMoveEastEventListener;
-import com.lilithsthrone.controller.eventListeners.buttons.ButtonMoveNorthEventListener;
-import com.lilithsthrone.controller.eventListeners.buttons.ButtonMoveSouthEventListener;
-import com.lilithsthrone.controller.eventListeners.buttons.ButtonMoveWestEventListener;
 import com.lilithsthrone.controller.eventListeners.buttons.ButtonZoomEventListener;
 import com.lilithsthrone.controller.eventListeners.tooltips.TooltipHideEventListener;
 import com.lilithsthrone.controller.eventListeners.tooltips.TooltipInformationEventListener;
@@ -1205,10 +1201,22 @@ public class MainController implements Initializable {
 	static ButtonZoomEventListener zoomButtonListener = new ButtonZoomEventListener();
 	
 	// Map movement:
-	private ButtonMoveNorthEventListener moveNorthListener = new ButtonMoveNorthEventListener();
-	private ButtonMoveSouthEventListener moveSouthListener = new ButtonMoveSouthEventListener();
-	private ButtonMoveEastEventListener moveEastListener = new ButtonMoveEastEventListener();
-	private ButtonMoveWestEventListener moveWestListener = new ButtonMoveWestEventListener();
+	private final org.w3c.dom.events.EventListener mapMovementDelegateListener = event -> {
+		org.w3c.dom.events.EventTarget target = event.getTarget();
+		org.w3c.dom.Node node = (target instanceof org.w3c.dom.Node) ? (org.w3c.dom.Node) target : null;
+		while (node != null) {
+			if (node instanceof org.w3c.dom.Element) {
+				switch (((org.w3c.dom.Element) node).getAttribute("id")) {
+					case "upButton": moveNorth(); return;
+					case "downButton": moveSouth(); return;
+					case "leftButton": moveWest(); return;
+					case "rightButton": moveEast(); return;
+					default: break;
+				}
+			}
+			node = node.getParentNode();
+		}
+	};
 	
 	// Responses:
 	static TooltipResponseMoveEventListener responseTooltipListener = new TooltipResponseMoveEventListener();
@@ -2073,18 +2081,7 @@ public class MainController implements Initializable {
 		EventListenerDataMap.put(documentAttributes, new ArrayList<>());
 		
 		// Map:
-		if (((EventTarget) documentAttributes.getElementById("upButton")) != null) {
-			addEventListener(documentAttributes, "upButton", "click", moveNorthListener, true);
-		}
-		if (((EventTarget) documentAttributes.getElementById("downButton")) != null) {
-			addEventListener(documentAttributes, "downButton", "click", moveSouthListener, true);
-		}
-		if (((EventTarget) documentAttributes.getElementById("leftButton")) != null) {
-			addEventListener(documentAttributes, "leftButton", "click", moveWestListener, true);
-		}
-		if (((EventTarget) documentAttributes.getElementById("rightButton")) != null) {
-			addEventListener(documentAttributes, "rightButton", "click", moveEastListener, true);
-		}
+		((EventTarget) documentAttributes).addEventListener("click", mapMovementDelegateListener, true);
 		
 		// Inventory:
 		// For all equipped clothing slots:

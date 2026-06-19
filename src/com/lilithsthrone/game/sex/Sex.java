@@ -1017,7 +1017,7 @@ public class Sex {
 	/**
 	 * Called after initialiseSex(). Handles any effects which are dependent upon SEX_DIALOGUE being the active DialogueNode.
 	 */
-	public void postSexInitSetup() {
+	public void selectInitialResponseTab() {
 		if(Main.sex.isMasturbation()) {
 			Main.game.setResponseTab(1);
 		} else {
@@ -1029,7 +1029,11 @@ public class Sex {
 				Main.game.setResponseTab(0);
 			}
 		}
-		Main.game.updateResponses();
+	}
+	
+		public void postSexInitSetup() {
+			selectInitialResponseTab();
+			Main.game.updateResponses();
 	}
 
 	private void endSex() {

@@ -27,7 +27,6 @@ import com.lilithsthrone.game.inventory.enchanting.TFModifier;
 import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.SvgUtil;
 import com.lilithsthrone.utils.Util;
-import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.utils.colours.Colour;
 import com.lilithsthrone.utils.colours.PresetColour;
 import com.lilithsthrone.utils.comparators.ItemEffectComparator;
@@ -37,7 +36,7 @@ import com.lilithsthrone.utils.comparators.ItemEffectComparator;
  * @version 0.3.9
  * @author Innoxia
  */
-public class Tattoo extends AbstractCoreItem implements XMLSaving {
+public class Tattoo extends AbstractCoreItem {
 	
 
 	private AbstractTattooType type;

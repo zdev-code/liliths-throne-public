@@ -30,7 +30,6 @@ import com.lilithsthrone.game.inventory.enchanting.ItemEffect;
 import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.SvgUtil;
 import com.lilithsthrone.utils.Util;
-import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.utils.colours.Colour;
 import com.lilithsthrone.utils.colours.PresetColour;
 
@@ -39,7 +38,7 @@ import com.lilithsthrone.utils.colours.PresetColour;
  * @version 0.4.9.7
  * @author Innoxia
  */
-public class AbstractFilledCondom extends AbstractItem implements XMLSaving {
+public class AbstractFilledCondom extends AbstractItem {
 	
 	private FluidStored cum;
 	

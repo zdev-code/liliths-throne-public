@@ -108,6 +108,7 @@ public class Main extends Application {
 	public final static boolean DEBUG = Boolean.valueOf(System.getProperty("debug", "false"));
 
 	public static Image WINDOW_IMAGE;
+	public static java.util.List<Image> WINDOW_ICONS;
 	
 	private static Properties properties;
 	
@@ -479,7 +480,11 @@ public class Main extends Application {
 
 		WINDOW_IMAGE = new Image("/com/lilithsthrone/res/images/windowIcon32.png");
 
-		Main.primaryStage.getIcons().add(WINDOW_IMAGE);
+		WINDOW_ICONS = java.util.List.of(
+				WINDOW_IMAGE,
+				new Image("/com/lilithsthrone/res/images/windowIcon32.png", 48, 48, true, true, false),
+				new Image("/com/lilithsthrone/res/images/windowIcon32.png", 64, 64, true, true, false));
+		Main.primaryStage.getIcons().setAll(WINDOW_ICONS);
 
 		refreshTitle();
 
@@ -500,6 +505,7 @@ public class Main extends Application {
 		mainController = loader.getController();
 		Main.primaryStage.setScene(mainScene);
 		Main.primaryStage.show();
+		javafx.application.Platform.runLater(() -> Main.primaryStage.getIcons().setAll(WINDOW_ICONS));
 		Main.game = new Game();
 		Main.sex = new Sex();
 		Main.combat = new Combat();

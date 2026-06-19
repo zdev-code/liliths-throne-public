@@ -40,7 +40,6 @@ import com.lilithsthrone.game.inventory.enchanting.TFPotency;
 import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.Util;
 import com.lilithsthrone.utils.Util.Value;
-import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.utils.colours.Colour;
 import com.lilithsthrone.utils.colours.PresetColour;
 
@@ -49,7 +48,7 @@ import com.lilithsthrone.utils.colours.PresetColour;
  * @version 0.3.7.9
  * @author Innoxia
  */
-public abstract class AbstractWeapon extends AbstractCoreItem implements XMLSaving {
+public abstract class AbstractWeapon extends AbstractCoreItem {
 	
 	private AbstractWeaponType weaponType;
 	

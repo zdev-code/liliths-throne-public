@@ -18,6 +18,14 @@ import com.lilithsthrone.utils.colours.PresetColour;
  */
 public class SvgUtil {
 
+	private static final java.util.regex.Pattern GRADIENT_ID_PATTERN = java.util.regex.Pattern.compile("linearGradient\\d|innoGrad\\d|radialGradient\\d");
+	private static final java.util.regex.Pattern SHADE_1_PATTERN = java.util.regex.Pattern.compile("#ff5555|#f55(?!\\d)");
+	private static final java.util.regex.Pattern SHADE_3_PATTERN = java.util.regex.Pattern.compile("#ffaaaa|#faa(?!\\d)");
+	private static final java.util.regex.Pattern SHADE_SEC_1_PATTERN = java.util.regex.Pattern.compile("#ff9955|#f95(?!\\d)");
+	private static final java.util.regex.Pattern SHADE_SEC_3_PATTERN = java.util.regex.Pattern.compile("#ffccaa|#fca(?!\\d)");
+	private static final java.util.regex.Pattern SHADE_TER_1_PATTERN = java.util.regex.Pattern.compile("#ffdd55|#fd5(?!\\d)");
+	private static final java.util.regex.Pattern SHADE_TER_3_PATTERN = java.util.regex.Pattern.compile("#ffeeaa|#fea(?!\\d)");
+	
 	public static String colourReplacementPattern(String gradientReplacementID, List<Colour> patternColours, List<ColourReplacement> patternColourReplacements, String inputString) {
 		String s = inputString;
 	
@@ -26,7 +34,7 @@ public class SvgUtil {
 			idReplacement.append(c.getId());
 		}
 		
-		s = s.replaceAll("linearGradient\\d|innoGrad\\d|radialGradient\\d",
+		s = GRADIENT_ID_PATTERN.matcher(s).replaceAll(
 				idReplacement.toString() + "$0");
 
 		s = sanitizeImageString(s, false);
@@ -85,7 +93,7 @@ public class SvgUtil {
 			for(Colour c : colours) {
 				idReplacement.append(c.getId());
 			}
-			s = s.replaceAll("linearGradient\\d|innoGrad\\d|radialGradient\\d",
+			s = GRADIENT_ID_PATTERN.matcher(s).replaceAll(
 					idReplacement.toString() + "$0");
 		}
 
@@ -129,34 +137,34 @@ public class SvgUtil {
 		String s = inputString;
 	
 		if(gradientReplacementID!=null) {
-			s = s.replaceAll("linearGradient\\d|innoGrad\\d|radialGradient\\d",
+			s = GRADIENT_ID_PATTERN.matcher(s).replaceAll(
 					gradientReplacementID + colour.toString() + (colourSecondary!=null?colourSecondary.toString():"") + (colourTertiary!=null?colourTertiary.toString():"") + "$0");
 		}
 
 		s = sanitizeImageString(s, true);
 		
 		if(colour!=null) {
-			s = s.replaceAll("#ff2a2a", colour.getShades()[0]);
-			s = s.replaceAll("#ff5555|#f55(?!\\d)", colour.getShades()[1]);
-			s = s.replaceAll("#ff8080", colour.getShades()[2]);
-			s = s.replaceAll("#ffaaaa|#faa(?!\\d)", colour.getShades()[3]);
-			s = s.replaceAll("#ffd5d5", colour.getShades()[4]);
+			s = s.replace("#ff2a2a", colour.getShades()[0]);
+			s = SHADE_1_PATTERN.matcher(s).replaceAll(colour.getShades()[1]);
+			s = s.replace("#ff8080", colour.getShades()[2]);
+			s = SHADE_3_PATTERN.matcher(s).replaceAll(colour.getShades()[3]);
+			s = s.replace("#ffd5d5", colour.getShades()[4]);
 		}
 		
 		if(colourSecondary!=null) {
-			s = s.replaceAll("#ff7f2a", colourSecondary.getShades()[0]);
-			s = s.replaceAll("#ff9955|#f95(?!\\d)", colourSecondary.getShades()[1]);
-			s = s.replaceAll("#ffb380", colourSecondary.getShades()[2]);
-			s = s.replaceAll("#ffccaa|#fca(?!\\d)", colourSecondary.getShades()[3]);
-			s = s.replaceAll("#ffe6d5", colourSecondary.getShades()[4]);
+			s = s.replace("#ff7f2a", colourSecondary.getShades()[0]);
+			s = SHADE_SEC_1_PATTERN.matcher(s).replaceAll(colourSecondary.getShades()[1]);
+			s = s.replace("#ffb380", colourSecondary.getShades()[2]);
+			s = SHADE_SEC_3_PATTERN.matcher(s).replaceAll(colourSecondary.getShades()[3]);
+			s = s.replace("#ffe6d5", colourSecondary.getShades()[4]);
 		}
 		
 		if(colourTertiary!=null) {
-			s = s.replaceAll("#ffd42a", colourTertiary.getShades()[0]);
-			s = s.replaceAll("#ffdd55|#fd5(?!\\d)", colourTertiary.getShades()[1]);
-			s = s.replaceAll("#ffe680", colourTertiary.getShades()[2]);
-			s = s.replaceAll("#ffeeaa|#fea(?!\\d)", colourTertiary.getShades()[3]);
-			s = s.replaceAll("#fff6d5", colourTertiary.getShades()[4]);
+			s = s.replace("#ffd42a", colourTertiary.getShades()[0]);
+			s = SHADE_TER_1_PATTERN.matcher(s).replaceAll(colourTertiary.getShades()[1]);
+			s = s.replace("#ffe680", colourTertiary.getShades()[2]);
+			s = SHADE_TER_3_PATTERN.matcher(s).replaceAll(colourTertiary.getShades()[3]);
+			s = s.replace("#fff6d5", colourTertiary.getShades()[4]);
 		}
 		
 		return s;
@@ -166,18 +174,18 @@ public class SvgUtil {
 		String s = inputString;
 	
 		if(gradientReplacementID!=null) {
-			s = s.replaceAll("linearGradient\\d|innoGrad\\d|radialGradient\\d",
+			s = GRADIENT_ID_PATTERN.matcher(s).replaceAll(
 					gradientReplacementID + colour.toString() + "$0");
 		}
 
 		s = sanitizeImageString(s, true);
 		
 		if(colour!=null) {
-			s = s.replaceAll("#ff2a2a", colour);
-			s = s.replaceAll("#ff5555|#f55(?!\\d)", colour);
-			s = s.replaceAll("#ff8080", colour);
-			s = s.replaceAll("#ffaaaa|#faa(?!\\d)", colour);
-			s = s.replaceAll("#ffd5d5", colour);
+			s = s.replace("#ff2a2a", colour);
+			s = SHADE_1_PATTERN.matcher(s).replaceAll(colour);
+			s = s.replace("#ff8080", colour);
+			s = SHADE_3_PATTERN.matcher(s).replaceAll(colour);
+			s = s.replace("#ffd5d5", colour);
 		}
 		
 		return s;

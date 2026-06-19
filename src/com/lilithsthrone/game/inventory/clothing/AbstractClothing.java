@@ -55,7 +55,6 @@ import com.lilithsthrone.rendering.Pattern;
 import com.lilithsthrone.utils.Units;
 import com.lilithsthrone.utils.Util;
 import com.lilithsthrone.utils.Util.Value;
-import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.utils.colours.Colour;
 import com.lilithsthrone.utils.colours.PresetColour;
 import com.lilithsthrone.utils.comparators.ItemEffectComparator;
@@ -65,7 +64,7 @@ import com.lilithsthrone.utils.comparators.ItemEffectComparator;
  * @version 0.3.9.5
  * @author Innoxia
  */
-public abstract class AbstractClothing extends AbstractCoreItem implements XMLSaving {
+public abstract class AbstractClothing extends AbstractCoreItem {
 
 	private AbstractClothingType clothingType;
 

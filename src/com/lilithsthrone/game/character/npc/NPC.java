@@ -114,7 +114,6 @@ import com.lilithsthrone.game.sex.sexActions.SexActionInterface;
 import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.Util;
 import com.lilithsthrone.utils.Util.Value;
-import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.utils.colours.PresetColour;
 import com.lilithsthrone.world.AbstractWorldType;
 import com.lilithsthrone.world.places.AbstractPlaceType;
@@ -124,7 +123,7 @@ import com.lilithsthrone.world.places.AbstractPlaceType;
  * @version 0.4.4
  * @author Innoxia
  */
-public abstract class NPC extends GameCharacter implements XMLSaving {
+public abstract class NPC extends GameCharacter {
 	
 	protected long lastTimeEncountered = DEFAULT_TIME_START_VALUE;
 

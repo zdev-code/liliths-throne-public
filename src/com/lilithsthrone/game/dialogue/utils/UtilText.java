@@ -246,6 +246,8 @@ import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
  */
 public class UtilText {
 
+	private static final Pattern VAR_BLOCK_PATTERN = Pattern.compile("(?s)#VAR(.*?)#ENDVAR");
+	
 	private static String modifiedSentence;
 	public static StringBuilder nodeContentSB = new StringBuilder(4096);
 	private static StringBuilder descriptionSB = new StringBuilder();
@@ -1102,12 +1104,12 @@ public class UtilText {
 			if(input.contains("#VAR")) { // Set variables to be parsed on each conditional:
 				speechTarget = "";
 				parserVariableCalls = new ArrayList<>();
-				Matcher matcherVAR = Pattern.compile("(?s)#VAR(.*?)#ENDVAR").matcher(input);
+				Matcher matcherVAR = VAR_BLOCK_PATTERN.matcher(input);
 				while(matcherVAR.find()) {
-					String s = matcherVAR.group().replaceAll("#VAR", "").replaceAll("#ENDVAR", "");
+					String s = matcherVAR.group().replace("#VAR", "").replace("#ENDVAR", "");
 					parserVariableCalls.add(s);
 				}
-				input = input.replaceAll("(?s)#VAR(.*?)#ENDVAR", "");
+				input = VAR_BLOCK_PATTERN.matcher(input).replaceAll("");
 			} else {
 				speechTarget = "";
 				parserVariableCalls = new ArrayList<>();

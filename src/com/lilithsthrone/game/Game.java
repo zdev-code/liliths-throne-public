@@ -2976,13 +2976,19 @@ public class Game implements XMLSaving {
 			System.out.println("NPC loop start");
 		}
 		
+		Set<String> charactersPresentIds = new HashSet<>();
+		for(NPC presentNpc : Main.game.getCharactersPresent()) {
+			charactersPresentIds.add(presentNpc.getId());
+		}
+		Set<String> playerCompanionIds = new HashSet<>(Main.game.getPlayer().getCompanionsId());
+		
 		for(NPC npc : NPCMap.values()) {
 			boolean inGame = !npc.getLocationPlace().getPlaceType().equals(PlaceType.GENERIC_EMPTY_TILE)
 					|| (npc instanceof Elemental && ((Elemental)npc).getSummoner()!=null && ((Elemental)npc).getSummoner().isElementalSummoned());
 			
 			// Non-slave NPCs clean clothes:
 			if(inGame) {
-				if(!Main.game.getCharactersPresent().contains(npc)) {
+				if(!charactersPresentIds.contains(npc.getId())) {
 					if(!npc.isSlave() || (!npc.getOwner().isPlayer() && npc.hasSlavePermissionSetting(SlavePermissionSetting.CLEANLINESS_WASH_CLOTHES))) {
 						npc.cleanAllClothing(true, false);
 					}
@@ -3000,8 +3006,8 @@ public class Game implements XMLSaving {
 			if(secondsPassedThisTurn>=0) {
 				if(inGame) {
 					if(!Main.game.isInCombat() && !Main.game.isInSex() && Main.game.isPrologueFinished()) { // Do not alter values during combat, sex, or prologue
-						if(!Main.game.getPlayer().getCompanions().contains(npc)) {
-							if(!Main.game.getCharactersPresent().contains(npc)) {
+						if(!playerCompanionIds.contains(npc.getId())) {
+							if(!charactersPresentIds.contains(npc.getId())) {
 								npc.setHealthPercentage(1);
 								npc.setManaPercentage(1);
 							}
@@ -3035,7 +3041,7 @@ public class Game implements XMLSaving {
 				if(!Main.game.isInCombat()
 						&& !Main.game.isInSex()
 						&& !npc.isAllowingPlayerToManageInventory()
-						&& (Main.game.getCurrentDialogueNode().equals(Main.game.getPlayerCell().getDialogue(false)) || !(getCharactersPresent().contains(npc)))) {
+						&& (Main.game.getCurrentDialogueNode().equals(Main.game.getPlayerCell().getDialogue(false)) || !(charactersPresentIds.contains(npc.getId())))) {
 					if(hoursPassed>0 && npc.isPendingClothingDressing()) {
 						npc.equipClothing(Util.newArrayListOfValues(EquipClothingSetting.REPLACE_CLOTHING, EquipClothingSetting.ADD_WEAPONS));
 						npc.setPendingClothingDressing(false);
@@ -3093,8 +3099,8 @@ public class Game implements XMLSaving {
 			
 			// Giving birth:
 			if(npc.hasStatusEffect(StatusEffect.PREGNANT_3)
-					&& !Main.game.getCharactersPresent().contains(npc)
-					&& !Main.game.getPlayer().getCompanions().contains(npc)
+					&& !charactersPresentIds.contains(npc.getId())
+					&& !playerCompanionIds.contains(npc.getId())
 					&& (Main.game.getSecondsPassed() - npc.getTimeProgressedToFinalPregnancyStage())>(12*60*60)) {
 				if(npc instanceof Lilaya) {
 					// Lilaya will only end pregnancy after you've seen it, or if she's a full demon:
@@ -3126,8 +3132,8 @@ public class Game implements XMLSaving {
 			
 			// Laying implanted eggs:
 			if(!npc.getIncubatingLitters().isEmpty()
-					&& !Main.game.getCharactersPresent().contains(npc)
-					&& !Main.game.getPlayer().getCompanions().contains(npc)) {
+					&& !charactersPresentIds.contains(npc.getId())
+					&& !playerCompanionIds.contains(npc.getId())) {
 				for(Entry<SexAreaOrifice, Litter> entry : new HashMap<>(npc.getIncubatingLitters()).entrySet()) {
 					long finalStageTime = npc.getTimeProgressedToFinalIncubationStage(entry.getKey());
 //					System.out.println(finalStageTime+", "+(Main.game.getSecondsPassed() - finalStageTime));
@@ -3292,7 +3298,7 @@ public class Game implements XMLSaving {
 								&& !Main.game.isInCombat()
 								&& !Main.game.isInSex()
 								&& !npc.isAllowingPlayerToManageInventory()
-								&& (Main.game.getCurrentDialogueNode().equals(Main.game.getPlayerCell().getDialogue(false)) || !(getCharactersPresent().contains(npc)))) {
+								&& (Main.game.getCurrentDialogueNode().equals(Main.game.getPlayerCell().getDialogue(false)) || !(charactersPresentIds.contains(npc.getId())))) {
 							npc.clearNonEquippedInventory(false);
 							Main.game.getCharacterUtils().regenerateItemsInInventory(npc);
 						}
@@ -3624,7 +3630,9 @@ public class Game implements XMLSaving {
 				return;
 				
 			} else if(response instanceof ResponseSex) {
-				setContent(new Response("", "", ((ResponseSex)response).initSex()));
+				DialogueNode sexNode = ((ResponseSex)response).initSex();
+				Main.sex.selectInitialResponseTab();
+				setContent(new Response("", "", sexNode));
 				Main.sex.postSexInitSetup();
 				((ResponseSex)response).postSexInitEffects();
 				Main.mainController.updateUILeftPanel();
@@ -3857,7 +3865,9 @@ public class Game implements XMLSaving {
 			return;
 			
 		} else if(response instanceof ResponseSex) {
-			setContent(new Response("", "", ((ResponseSex)response).initSex()));
+			DialogueNode sexNode = ((ResponseSex)response).initSex();
+			Main.sex.selectInitialResponseTab();
+			setContent(new Response("", "", sexNode));
 			Main.sex.postSexInitSetup();
 			((ResponseSex)response).postSexInitEffects();
 			Main.mainController.updateUILeftPanel();

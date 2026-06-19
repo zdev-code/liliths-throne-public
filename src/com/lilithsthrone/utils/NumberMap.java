@@ -10,7 +10,7 @@ import java.util.Set;
  * @since 0.4.7.1
  * @version 0.4.7.1
  */
-public class NumberMap<K, V extends Number> extends AbstractMap<K, V> implements Map<K, V> {
+public class NumberMap<K, V extends Number> extends AbstractMap<K, V> {
 	private final Map<K, V> map;
 	private final Class<V> cls;
 	

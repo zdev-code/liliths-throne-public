@@ -29,7 +29,6 @@ import com.lilithsthrone.game.sex.sexActions.SexActionUtility;
 import com.lilithsthrone.main.Main;
 import com.lilithsthrone.utils.Util;
 import com.lilithsthrone.utils.Util.Value;
-import com.lilithsthrone.utils.XMLSaving;
 import com.lilithsthrone.utils.colours.PresetColour;
 
 /**
@@ -37,7 +36,7 @@ import com.lilithsthrone.utils.colours.PresetColour;
  * @version 0.3.9.2
  * @author Innoxia
  */
-public abstract class AbstractItem extends AbstractCoreItem implements XMLSaving {
+public abstract class AbstractItem extends AbstractCoreItem {
 
 	protected AbstractItemType itemType;
 	protected List<ItemEffect> itemEffects;

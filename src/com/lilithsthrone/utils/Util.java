@@ -25,7 +25,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.w3c.dom.Document;
@@ -361,7 +360,7 @@ public class Util {
 	public static void openLinkInDefaultBrowser(String url) {
 		Runtime runtime = Runtime.getRuntime();
 		try {
-			runtime.exec("xdg-open " + url);
+			runtime.exec(new String[] { "xdg-open", url });
 		} catch (IOException e0) {
 			Desktop desktop = Desktop.getDesktop();
 			try {
@@ -1033,10 +1032,8 @@ public class Util {
 		return modifiedSentence.toString();
 	}
 
-	private static Pattern endOfSentence = Pattern.compile("[,.!?]");
-	
 	private static boolean isEndOfSentence(char c) {
-		return endOfSentence.matcher(String.valueOf(c)).matches();
+		return ",.!?".indexOf(c) >= 0;
 	}
 
 //	private static String insertIntoSentences(String sentence, int frequency, String[] inserts, boolean middle) {
@@ -1383,10 +1380,10 @@ public class Util {
 		}
 
 		String returnString = utilitiesStringBuilder.toString();
-		returnString = returnString.replaceAll("Hello", "Heya");
-		returnString = returnString.replaceAll("hello", "heya");
-		returnString = returnString.replaceAll("Goodbye", "Bye");
-		returnString = returnString.replaceAll("goodbye", "bye");
+		returnString = returnString.replace("Hello", "Heya");
+		returnString = returnString.replace("hello", "heya");
+		returnString = returnString.replace("Goodbye", "Bye");
+		returnString = returnString.replace("goodbye", "bye");
 		return returnString;
 	}
 	
@@ -1507,14 +1504,14 @@ public class Util {
 			String [] splitConditional = s.split("#IF\\((.*?)\\)|#ELSEIF\\((.*?)\\)"); // Do not replace text inside conditional parsing statements
 			for(String s2 : splitConditional) {
 				String sReplace = s2
-						.replaceAll("Hi ", "Heeey ")
-						.replaceAll("yes", "yesh")
-						.replaceAll("Is", "Ish")
-						.replaceAll("is", "ish")
-						.replaceAll("It's", "It'sh")
-						.replaceAll("it's", "it'sh")
-						.replaceAll("So", "Sho")
-						.replaceAll("so", "sho");
+						.replace("Hi ", "Heeey ")
+						.replace("yes", "yesh")
+						.replace("Is", "Ish")
+						.replace("is", "ish")
+						.replace("It's", "It'sh")
+						.replace("it's", "it'sh")
+						.replace("So", "Sho")
+						.replace("so", "sho");
 					
 					sentence = sentence.replace(s2, sReplace);
 			}
