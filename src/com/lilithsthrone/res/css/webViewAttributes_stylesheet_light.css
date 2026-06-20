@@ -300,6 +300,7 @@ h6{
 	margin:15%;
 	width:70%;
 	padding:0;
+	pointer-events: none;
 	-webkit-user-select: none;
 }
 .place-icon:after {
@@ -375,6 +376,7 @@ h6{
 	width:33%;
 	top:2px;
 	left:2px;
+	pointer-events: none;
 }
 .npc-home-icon{
 	position:absolute;
@@ -382,6 +384,7 @@ h6{
 	width:33%;
 	bottom:2px;
 	left:2px;
+	pointer-events: none;
 }
 
 .item-icon{
@@ -390,6 +393,7 @@ h6{
 	width:33%;
 	bottom:2px;
 	left:2px;
+	pointer-events: none;
 }
 
 .hotkey-icon{
